@@ -1,3 +1,36 @@
 <resources>
-    <string name="app_name">GrimorioDeHogwarts</string>
+    <string name="app_name">Grimório de Hogwarts</string>
+
+    <!-- Menu -->
+    <string name="icone_menu" translatable="false">⚡</string>
+    <string name="subtitulo_menu">Descubra os segredos do mundo mágico</string>
+    <string name="btn_menu_personagem">Buscar Personagem</string>
+    <string name="btn_menu_criatura">Buscar Criatura</string>
+
+    <!-- Telas de busca -->
+    <string name="titulo_personagem">Busca de Personagem</string>
+    <string name="hint_personagem">Digite o nome do personagem</string>
+    <string name="titulo_criatura">Busca de Criatura</string>
+    <string name="hint_criatura">Digite o nome completo da criatura</string>
+    <string name="btn_buscar">Buscar</string>
+    <string name="btn_voltar">Voltar ao menu</string>
+
+    <!-- Resultados -->
+    <string name="label_nome">Nome: %1$s</string>
+    <string name="label_especie">Espécie: %1$s</string>
+    <string name="label_casa">Casa: %1$s</string>
+    <plurals name="personagens_encontrados">
+        <item quantity="one">%d personagem encontrado</item>
+        <item quantity="other">%d personagens encontrados</item>
+    </plurals>
+    <string name="nao_informado">Não informado</string>
+    <string name="imagem_indisponivel">Imagem indisponível</string>
+    <string name="descricao_imagem_criatura">Imagem da criatura</string>
+
+    <!-- Validações e mensagens -->
+    <string name="erro_campo_vazio">O campo não pode estar vazio</string>
+    <string name="erro_minimo_caracteres">Digite pelo menos 3 caracteres</string>
+    <string name="msg_nenhum_personagem">Nenhum personagem encontrado</string>
+    <string name="msg_nenhuma_criatura">Nenhuma criatura encontrada</string>
+    <string name="msg_erro_conexao">Não foi possível consultar o Grimório. Verifique sua conexão e tente novamente.</string>
 </resources>

@@ -1,114 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F5FA">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="⚡ Grimório de Hogwarts"
-            android:textColor="#51216F"
-            android:textSize="26sp"
-            android:textStyle="bold"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="12dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Busca de Personagens"
-            android:textColor="#51216F"
-            android:textSize="21sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="25dp" />
-
-        <EditText
-            android:id="@+id/edtNomePersonagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Digite o nome do personagem"
-            android:inputType="textCapSentences"
-            android:padding="14dp"
-            android:backgroundTint="#51216F" />
-
-        <Button
-            android:id="@+id/btnBuscarPersonagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buscar"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#51216F" />
-
-        <ProgressBar
-            android:id="@+id/progressPersonagem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/txtMensagemPersonagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#B3261E"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:visibility="gone" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/layoutResultadoPersonagem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:background="#FFFFFF"
-            android:layout_marginTop="24dp"
-            android:visibility="gone">
+            android:padding="16dp">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/titulo_personagem"
+                android:textColor="@color/roxo_hogwarts"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_personagem"
+                android:importantForAutofill="no"
+                android:inputType="textCapWords" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/btnBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="buscarPersonagem"
+                android:text="@string/btn_buscar" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Informações do personagem"
-                android:textColor="#51216F"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp" />
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/txtNomePersonagem"
+                android:id="@+id/tvMensagem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#222222"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
-
-            <TextView
-                android:id="@+id/txtEspeciePersonagem"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#444444"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:textColor="@color/cinza_texto"
                 android:textSize="16sp"
-                android:layout_marginBottom="12dp" />
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/txtCasaPersonagem"
+            <LinearLayout
+                android:id="@+id/layoutResultado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#444444"
-                android:textSize="16sp" />
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvQuantidade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:textColor="@color/cinza_texto"
+                    android:textSize="14sp" />
+
+                <!-- Um item_personagem.xml é adicionado aqui para cada resultado -->
+                <LinearLayout
+                    android:id="@+id/layoutLista"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+    <Button
+        android:id="@+id/btnVoltar"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:onClick="voltarAoMenu"
+        android:text="@string/btn_voltar" />
+
+</LinearLayout>
