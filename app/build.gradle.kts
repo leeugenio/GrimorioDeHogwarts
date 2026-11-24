@@ -37,6 +37,14 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.ktx)
     implementation(libs.material)
+
+    // Retrofit + Gson para consumir a Hogwarts API
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
+    // Picasso para carregar as imagens das criaturas
+    implementation(libs.picasso)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
