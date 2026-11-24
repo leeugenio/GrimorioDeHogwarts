@@ -1,123 +1,131 @@
-
 package com.example.grimoriodehogwarts
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.grimoriodehogwarts.api.HogwartsApi
-import org.json.JSONObject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class PersonagemActivity : AppCompatActivity() {
 
-    private lateinit var edtNome: EditText
+    private lateinit var etNome: EditText
     private lateinit var btnBuscar: Button
     private lateinit var progressBar: ProgressBar
-    private lateinit var txtMensagem: TextView
+    private lateinit var tvMensagem: TextView
     private lateinit var layoutResultado: LinearLayout
-
-    private lateinit var txtNome: TextView
-    private lateinit var txtEspecie: TextView
-    private lateinit var txtCasa: TextView
+    private lateinit var tvNome: TextView
+    private lateinit var tvEspecie: TextView
+    private lateinit var tvCasa: TextView
+    private lateinit var hogwartsApi: HogwartsApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_personagem)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime()
+            )
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
-        // Referências dos componentes da tela
-        edtNome = findViewById(R.id.edtNomePersonagem)
-        btnBuscar = findViewById(R.id.btnBuscarPersonagem)
-        progressBar = findViewById(R.id.progressPersonagem)
-        txtMensagem = findViewById(R.id.txtMensagemPersonagem)
-        layoutResultado = findViewById(R.id.layoutResultadoPersonagem)
+        etNome = findViewById(R.id.etNome)
+        btnBuscar = findViewById(R.id.btnBuscar)
+        progressBar = findViewById(R.id.progressBar)
+        tvMensagem = findViewById(R.id.tvMensagem)
+        layoutResultado = findViewById(R.id.layoutResultado)
+        tvNome = findViewById(R.id.tvNome)
+        tvEspecie = findViewById(R.id.tvEspecie)
+        tvCasa = findViewById(R.id.tvCasa)
 
-        txtNome = findViewById(R.id.txtNomePersonagem)
-        txtEspecie = findViewById(R.id.txtEspeciePersonagem)
-        txtCasa = findViewById(R.id.txtCasaPersonagem)
+        // Configura Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://hogwarts-api.com/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-        // Ação do botão Buscar
-        btnBuscar.setOnClickListener {
+        hogwartsApi = retrofit.create(HogwartsApi::class.java)
+    } //Fim onCreate
 
-            val nome = edtNome.text.toString().trim()
+    // Chamado pelo botão Buscar: valida a entrada antes de consultar a API
+    fun buscarPersonagem(view: View) {
+        val nome = etNome.text.toString().trim()
 
-            // Validação do campo vazio
-            if (nome.isEmpty()) {
-                edtNome.error = "Digite o nome do personagem"
-                return@setOnClickListener
-            }
-
-            // Validação de quantidade mínima de caracteres
-            if (nome.length < 3) {
-                edtNome.error = "Digite pelo menos 3 caracteres"
-                return@setOnClickListener
-            }
-
-            // Preparando a tela para a consulta
-            edtNome.error = null
-            txtMensagem.visibility = View.GONE
-            layoutResultado.visibility = View.GONE
-            progressBar.visibility = View.VISIBLE
-            btnBuscar.isEnabled = false
-
-            // Consultando a API
-            HogwartsApi.buscarPersonagens(nome) { resultado ->
-
-                progressBar.visibility = View.GONE
-                btnBuscar.isEnabled = true
-
-                resultado.onSuccess { personagens ->
-
-                    val personagem = (0 until personagens.length())
-                        .mapNotNull { personagens.optJSONObject(it) }
-                        .firstOrNull { item ->
-                            val nomeApi = item.optString("name", "").lowercase()
-                            nome.lowercase()
-                                .split(Regex("\\s+"))
-                                .all { termo -> nomeApi.contains(termo) }
-                        }
-
-                    if (personagem == null) {
-                        txtMensagem.text = "Nenhum personagem encontrado"
-                        txtMensagem.visibility = View.VISIBLE
-                    } else {
-                        txtNome.text = "Nome: " + obterCampo(personagem, "name")
-                        txtEspecie.text = "Espécie: " + obterCampo(personagem, "species")
-                        txtCasa.text = "Casa: " + obterCampo(personagem, "house")
-                        layoutResultado.visibility = View.VISIBLE
-                    }
-                }
-
-                resultado.onFailure {
-
-                    txtMensagem.text =
-                        "Erro ao consultar. Verifique sua internet e tente novamente."
-
-                    txtMensagem.visibility = View.VISIBLE
-                }
-            }
+        if (nome.isEmpty()) {
+            etNome.error = getString(R.string.erro_campo_vazio)
+        } else if (nome.length < 3) {
+            etNome.error = getString(R.string.erro_minimo_caracteres)
+        } else {
+            buscarPersonagemApi(nome)
         }
     }
 
-    // Trata informações que não existem na API
-    private fun obterCampo(
-        objeto: JSONObject,
-        campo: String
-    ): String {
+    // Função para buscar o personagem usando corrotinas
+    private fun buscarPersonagemApi(nome: String) {
+        lifecycleScope.launch {
+            try {
+                showProgressBar()
+                // Faz a requisição em segundo plano
+                val response = withContext(Dispatchers.IO) {
+                    hogwartsApi.buscarPersonagens(nome)
+                }
 
-        val valor = objeto.opt(campo)
+                // Um mesmo trecho pode retornar vários personagens: usa o primeiro
+                val personagem = response.data.firstOrNull()
 
-        return if (
-            valor == null ||
-            valor == JSONObject.NULL ||
-            valor.toString().isBlank()
-        ) {
-            "Não informado"
-        } else {
-            valor.toString()
-        }
+                if (personagem != null) {
+                    tvNome.text = getString(R.string.label_nome, valorOuPadrao(personagem.nome))
+                    tvEspecie.text = getString(R.string.label_especie, valorOuPadrao(personagem.especie))
+                    tvCasa.text = getString(R.string.label_casa, valorOuPadrao(personagem.casa))
+                    layoutResultado.visibility = View.VISIBLE
+                } else {
+                    mostrarMensagem(getString(R.string.msg_nenhum_personagem))
+                }
+            } catch (e: Exception) {
+                Log.e("PersonagemActivity", "Erro ao buscar o personagem", e)
+                mostrarMensagem(getString(R.string.msg_erro_conexao))
+            } finally {
+                hideProgressBar()
+            }
+        } //Fim corrotina
+    } //Fim buscarPersonagemApi
+
+    // Dado ausente na API vira "Não informado"
+    private fun valorOuPadrao(valor: String?): String {
+        return if (valor.isNullOrBlank()) getString(R.string.nao_informado) else valor
+    }
+
+    private fun mostrarMensagem(mensagem: String) {
+        tvMensagem.text = mensagem
+        tvMensagem.visibility = View.VISIBLE
+    }
+
+    // Função para mostrar o ProgressBar
+    private fun showProgressBar() {
+        progressBar.visibility = View.VISIBLE
+        btnBuscar.isEnabled = false
+        tvMensagem.visibility = View.GONE
+        layoutResultado.visibility = View.GONE
+    }
+
+    // Função para esconder o ProgressBar
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+        btnBuscar.isEnabled = true
     }
 }

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="roxo_hogwarts">#FF51216F</color>
+    <color name="roxo_claro">#FFB9A3C9</color>
+    <color name="fundo">#FFF8F5FA</color>
+    <color name="fundo_card">#FFFFFFFF</color>
+    <color name="cinza_texto">#FF666666</color>
 </resources>
