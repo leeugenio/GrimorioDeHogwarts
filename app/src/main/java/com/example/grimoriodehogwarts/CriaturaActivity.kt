@@ -78,6 +78,11 @@ class CriaturaActivity : AppCompatActivity() {
         }
     }
 
+    // Volta para o menu inicial
+    fun voltarAoMenu(view: View) {
+        finish()
+    }
+
     // Função para buscar a criatura usando corrotinas
     private fun buscarCriaturaApi(nome: String) {
         lifecycleScope.launch {

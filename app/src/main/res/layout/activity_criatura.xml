@@ -1,107 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:text="@string/titulo_criatura"
-            android:textColor="@color/roxo_hogwarts"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etNome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_criatura"
-            android:importantForAutofill="no"
-            android:inputType="textCapWords" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="5dp" />
-
-        <Button
-            android:id="@+id/btnBuscar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="buscarCriatura"
-            android:text="@string/btn_buscar" />
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="10dp" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tvMensagem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:textColor="@color/cinza_texto"
-            android:textSize="16sp"
-            android:visibility="gone" />
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
-            android:id="@+id/layoutResultado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/fundo_card"
-            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:visibility="gone">
+            android:padding="16dp">
 
             <TextView
-                android:id="@+id/tvNome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingTop="16dp"
                 android:paddingBottom="16dp"
+                android:text="@string/titulo_criatura"
                 android:textColor="@color/roxo_hogwarts"
-                android:textSize="22sp"
+                android:textSize="24sp"
                 android:textStyle="bold" />
 
-            <!-- fitCenter preserva a proporção da imagem (sem distorção) -->
-            <ImageView
-                android:id="@+id/ivCriatura"
+            <EditText
+                android:id="@+id/etNome"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:contentDescription="@string/descricao_imagem_criatura"
-                android:scaleType="fitCenter" />
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_criatura"
+                android:importantForAutofill="no"
+                android:inputType="textCapWords" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="5dp" />
+
+            <Button
+                android:id="@+id/btnBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="buscarCriatura"
+                android:text="@string/btn_buscar" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="10dp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/tvImagemIndisponivel"
+                android:id="@+id/tvMensagem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:text="@string/imagem_indisponivel"
+                android:paddingTop="16dp"
                 android:textColor="@color/cinza_texto"
                 android:textSize="16sp"
                 android:visibility="gone" />
 
+            <LinearLayout
+                android:id="@+id/layoutResultado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/fundo_card"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="20dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tvNome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="16dp"
+                    android:textColor="@color/roxo_hogwarts"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <!-- fitCenter preserva a proporção da imagem (sem distorção) -->
+                <ImageView
+                    android:id="@+id/ivCriatura"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/descricao_imagem_criatura"
+                    android:scaleType="fitCenter" />
+
+                <TextView
+                    android:id="@+id/tvImagemIndisponivel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="8dp"
+                    android:text="@string/imagem_indisponivel"
+                    android:textColor="@color/cinza_texto"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+    <Button
+        android:id="@+id/btnVoltar"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:onClick="voltarAoMenu"
+        android:text="@string/btn_voltar" />
+
+</LinearLayout>

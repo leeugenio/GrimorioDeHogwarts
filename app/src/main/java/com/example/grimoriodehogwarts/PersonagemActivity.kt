@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.grimoriodehogwarts.api.HogwartsApi
+import com.example.grimoriodehogwarts.model.Personagem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,9 +28,8 @@ class PersonagemActivity : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
     private lateinit var tvMensagem: TextView
     private lateinit var layoutResultado: LinearLayout
-    private lateinit var tvNome: TextView
-    private lateinit var tvEspecie: TextView
-    private lateinit var tvCasa: TextView
+    private lateinit var tvQuantidade: TextView
+    private lateinit var layoutLista: LinearLayout
     private lateinit var hogwartsApi: HogwartsApi
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,9 +49,8 @@ class PersonagemActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         tvMensagem = findViewById(R.id.tvMensagem)
         layoutResultado = findViewById(R.id.layoutResultado)
-        tvNome = findViewById(R.id.tvNome)
-        tvEspecie = findViewById(R.id.tvEspecie)
-        tvCasa = findViewById(R.id.tvCasa)
+        tvQuantidade = findViewById(R.id.tvQuantidade)
+        layoutLista = findViewById(R.id.layoutLista)
 
         // Configura Retrofit
         val retrofit = Retrofit.Builder()
@@ -85,14 +84,11 @@ class PersonagemActivity : AppCompatActivity() {
                     hogwartsApi.buscarPersonagens(nome)
                 }
 
-                // Um mesmo trecho pode retornar vários personagens: usa o primeiro
-                val personagem = response.data.firstOrNull()
+                // Um mesmo trecho pode retornar vários personagens: exibe todos
+                val personagens = response.data
 
-                if (personagem != null) {
-                    tvNome.text = getString(R.string.label_nome, valorOuPadrao(personagem.nome))
-                    tvEspecie.text = getString(R.string.label_especie, valorOuPadrao(personagem.especie))
-                    tvCasa.text = getString(R.string.label_casa, valorOuPadrao(personagem.casa))
-                    layoutResultado.visibility = View.VISIBLE
+                if (personagens.isNotEmpty()) {
+                    mostrarPersonagens(personagens)
                 } else {
                     mostrarMensagem(getString(R.string.msg_nenhum_personagem))
                 }
@@ -104,6 +100,32 @@ class PersonagemActivity : AppCompatActivity() {
             }
         } //Fim corrotina
     } //Fim buscarPersonagemApi
+
+    // Cria um cartão (item_personagem.xml) para cada personagem encontrado
+    private fun mostrarPersonagens(personagens: List<Personagem>) {
+        layoutLista.removeAllViews()
+
+        for (personagem in personagens) {
+            val item = layoutInflater.inflate(R.layout.item_personagem, layoutLista, false)
+            item.findViewById<TextView>(R.id.tvNome).text =
+                getString(R.string.label_nome, valorOuPadrao(personagem.nome))
+            item.findViewById<TextView>(R.id.tvEspecie).text =
+                getString(R.string.label_especie, valorOuPadrao(personagem.especie))
+            item.findViewById<TextView>(R.id.tvCasa).text =
+                getString(R.string.label_casa, valorOuPadrao(personagem.casa))
+            layoutLista.addView(item)
+        }
+
+        tvQuantidade.text = resources.getQuantityString(
+            R.plurals.personagens_encontrados, personagens.size, personagens.size
+        )
+        layoutResultado.visibility = View.VISIBLE
+    }
+
+    // Volta para o menu inicial
+    fun voltarAoMenu(view: View) {
+        finish()
+    }
 
     // Dado ausente na API vira "Não informado"
     private fun valorOuPadrao(valor: String?): String {

@@ -4,7 +4,7 @@ App Android desenvolvido para a disciplina **DS151 – Desenvolvimento para Disp
 
 Consome a [Hogwarts API](https://hogwarts-api.com) (gratuita, sem chave) para:
 
-- buscar um **personagem** pelo nome e exibir nome completo, espécie e casa;
+- buscar **personagens** pelo nome e exibir nome completo, espécie e casa de todos os encontrados;
 - buscar uma **criatura** pelo nome e exibir nome e imagem.
 
 ## Telas
@@ -30,6 +30,7 @@ Consome a [Hogwarts API](https://hogwarts-api.com) (gratuita, sem chave) para:
 - Espécie ou casa ausentes aparecem como "Não informado"
 - Criatura sem imagem (ou com falha ao carregar) mostra uma imagem do próprio app e "Imagem indisponível"
 - Sem internet ou erro de servidor: mensagem amigável, o app não fecha e é possível tentar de novo
+- Botão "Voltar ao menu" nas telas de busca
 - Telas fixadas em retrato
 
 ## Como executar
