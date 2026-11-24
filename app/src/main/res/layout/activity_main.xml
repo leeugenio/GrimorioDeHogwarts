@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="28dp"
+    android:background="#F8F5FA">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="⚡"
+        android:textSize="65sp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GRIMÓRIO DE\nHOGWARTS"
+        android:textColor="#51216F"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descubra os segredos do mundo mágico"
+        android:textColor="#666666"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:layout_marginBottom="40dp" />
+
+    <Button
+        android:id="@+id/btnPersonagens"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Buscar Personagens"
+        android:textSize="17sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#51216F"
+        android:layout_marginBottom="18dp" />
+
+    <Button
+        android:id="@+id/btnCriaturas"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Buscar Criaturas"
+        android:textSize="17sp"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#51216F" />
+
+</LinearLayout>
